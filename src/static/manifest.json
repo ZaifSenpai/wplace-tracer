@@ -1,0 +1,35 @@
+{
+  "name": "Wplace Overlay",
+  "description": "Overlay images on wplace.live to help in drawing",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "icons": {
+    "16": "assets/logo16.png",
+    "48": "assets/logo48.png",
+    "128": "assets/logo128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Wplace Overlay",
+    "default_icon": "assets/logo128.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://wplace.live/*"
+      ],
+      "js": [
+        "contentScript.js"
+      ],
+      "css": [
+        "contentStyle.css"
+      ]
+    }
+  ]
+}
