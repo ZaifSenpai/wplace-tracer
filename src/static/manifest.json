@@ -1,6 +1,6 @@
 {
-  "name": "Wplace Overlay",
-  "description": "Overlay images on wplace.live to help in drawing",
+  "name": "Wplace Tracer",
+  "description": "Overlay images on wplace.live to help in drawing by tracing on them",
   "version": "1.0.0",
   "manifest_version": 3,
   "icons": {
@@ -10,15 +10,12 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Wplace Overlay",
+    "default_title": "Wplace Tracer",
     "default_icon": "assets/logo128.png"
   },
   "permissions": [
     "storage"
   ],
-  "background": {
-    "service_worker": "background.js"
-  },
   "content_scripts": [
     {
       "matches": [

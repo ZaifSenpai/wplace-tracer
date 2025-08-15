@@ -1,54 +1,77 @@
 import "arrive";
 import $ from "jquery";
-import * as Constants from "../lib/constants";
+import { storageApi } from "../lib/chromeApi";
 
-// Should not directly import contentStyle.css because it will be injected into the page
+const overlayHtml = `
+<div id="wplace-ext-overlay"></div>
+`;
 
-// Anonymous function so minifiers can rename local variables for better compression
 ((context) => {
   const { window, document, chrome } = context;
 
-  const { storage: storageApi, runtime: runtimeApi } = chrome;
-
-  const { local: Storage } = storageApi;
-
-  const manifest = runtimeApi.getManifest();
-
   $(() => {
-    // TODO: Init when document is ready
+    $("body").append(overlayHtml);
 
-    Storage.get(["key", "some-key"]).then(({ key, "some-key": someKey }) => {
-      console.log("key", key);
-      console.log("someKey", someKey);
-      // TODO
+    reloadImage();
+
+    setImagePosition();
+
+    storageApi.onChanged.addListener((changes, namespace) => {
+      if ("offset" in changes) {
+        setImagePosition(changes.offset.newValue ?? null);
+      } else {
+        reloadImage();
+        setImagePosition();
+      }
     });
   });
 
-  storageApi.onChanged.addListener((changes, namespace) => {
-    // TODO: Handle storage changes if required
-  });
+  function reloadImage() {
+    console.log("🚀 ~ reloadImage ~ reloadImage:", reloadImage);
+    storageApi.local
+      .get(["status", "selectedImage", "overlayWidth", "overlayHeight"])
+      .then((data) =>
+        updateImage({
+          show: data.status ?? true,
+          width: data.overlayWidth ?? 200,
+          height: data.overlayHeight ?? 200,
+          data: data.selectedImage ?? null,
+        })
+      );
+  }
 
-  runtimeApi.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.m === Constants.REQUEST_PING) {
-      sendResponse({ m: Constants.RESPONSE_PONG });
+  function updateImage(imageInfo: OverlayImageInfo) {
+    const $overlay = $("#wplace-ext-overlay");
+
+    if (!imageInfo.data || !imageInfo.show) {
+      $overlay.empty();
+      return;
     }
 
-    // TODO: Handle other messages if required
-  });
+    let $img = $overlay.find("img");
 
-  document.arrive(
-    ".css-selector",
-    {
-      // onceOnly: false,
-      // existing: true,
-      // fireOnAttributesModification: false,
-    },
-    (element) => {
-      // TODO: Element was added
+    if (!$img.length) {
+      $img = $("<img/>");
     }
-  );
 
-  document.leave(".css-selector", (element) => {
-    // TODO: Element was removed
-  });
+    $img.attr("src", imageInfo.data);
+    $img.css("--width", imageInfo.width + "px");
+    $img.css("--height", imageInfo.height + "px");
+    $overlay.append($img);
+  }
+
+  async function setImagePosition(pos?: { top: number; left: number } | null) {
+    if (typeof pos === "undefined") {
+      pos = await storageApi.local
+        .get(["offset"])
+        .then((data) => data.offset ?? null);
+    }
+
+    const $img = $("#wplace-ext-overlay > img");
+
+    pos ??= { top: 0, left: 0 };
+
+    $img.css("--img-top", pos.top + "px");
+    $img.css("--img-left", pos.left + "px");
+  }
 })(window);

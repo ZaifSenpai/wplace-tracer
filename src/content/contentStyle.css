@@ -1,1 +1,26 @@
-/* Todo: Add css that will be injected to web pages */
+#wplace-ext-overlay {
+  display: none;
+  width: var(--width);
+  height: var(--height);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+#wplace-ext-overlay:has(img) {
+  display: block;
+}
+
+#wplace-ext-overlay > img {
+  width: var(--width);
+  height: var(--height);
+  object-fit: contain;
+  border: 1px dotted red;
+  opacity: 0.4;
+  pointer-events: none;
+  position: relative;
+  top: var(--img-top, 0);
+  left: var(--img-left, 0);
+}
