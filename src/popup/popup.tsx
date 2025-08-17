@@ -9,7 +9,6 @@ const App: React.FC<{}> = () => {
   const [status, setStatus] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [overlayWidth, setOverlayWidth] = useState(200);
-  const [overlayHeight, setOverlayHeight] = useState(200);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -19,7 +18,6 @@ const App: React.FC<{}> = () => {
         setStatus(status ?? true);
         setSelectedImage(selectedImage || null);
         setOverlayWidth(overlayWidth || 200);
-        setOverlayHeight(overlayHeight || 200);
       }
     );
   }, []);
@@ -48,36 +46,11 @@ const App: React.FC<{}> = () => {
     storageApi.local.set({ status });
   }, []);
 
-  function updateOverlayWidth(
-    newOverlayWidth: number,
-    ignoreAspectRatio = false
-  ) {
+  function updateOverlayWidth(newOverlayWidth: number) {
     if (newOverlayWidth === overlayWidth) return;
-
-    const aspectRatio = overlayWidth / overlayHeight;
 
     setOverlayWidth(newOverlayWidth);
     storageApi.local.set({ overlayWidth: newOverlayWidth });
-
-    if (!ignoreAspectRatio) {
-      updateOverlayHeight(Math.round(newOverlayWidth / aspectRatio), true);
-    }
-  }
-
-  function updateOverlayHeight(
-    newOverlayHeight: number,
-    ignoreAspectRatio = false
-  ) {
-    if (newOverlayHeight === overlayHeight) return;
-
-    const aspectRatio = overlayWidth / overlayHeight;
-
-    setOverlayHeight(newOverlayHeight);
-    storageApi.local.set({ overlayHeight: newOverlayHeight });
-
-    if (!ignoreAspectRatio) {
-      updateOverlayWidth(Math.round(aspectRatio * newOverlayHeight), true);
-    }
   }
 
   return (
@@ -132,30 +105,19 @@ const App: React.FC<{}> = () => {
             max={2000}
             onChange={(e) => updateOverlayWidth(e.target.valueAsNumber)}
           />
-          <img
-            className="m-2"
-            title="Aspect Ratio Maintained"
-            tabIndex={-1}
-            src="assets/link.png"
-            width={30}
-            height={30}
-          ></img>
-          <input
-            type="number"
+          <p className="m-2 size-[30px] content-center text-center">X</p>
+          <span
             aria-describedby="helper-text-explanation"
-            className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="400"
+            className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white mt-0.5"
             title="Height"
-            value={overlayHeight}
-            min={10}
-            max={2000}
-            onChange={(e) => updateOverlayHeight(e.target.valueAsNumber)}
-          />
+          >
+            (auto)
+          </span>
         </div>
 
         <p className="text-sm font-normal">
-          <InformationCircleIcon width={18} height={18} className="inline" />{" "}
-          Hold 'Shift' and drag image on the website to reposition
+          <InformationCircleIcon width={18} height={18} className="inline" /> By
+          holding 'Shift' on the website, you can drag the image to reposition.
         </p>
       </div>
       <input

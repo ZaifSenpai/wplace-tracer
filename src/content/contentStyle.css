@@ -6,15 +6,10 @@
   top: 0;
   left: 0;
   pointer-events: none;
-  cursor: grab;
 }
 
 #wplace-ext-overlay.active {
   pointer-events: all;
-}
-
-#wplace-ext-overlay.dragging {
-  cursor: grabbing;
 }
 
 #wplace-ext-overlay:has(img) {
@@ -23,20 +18,25 @@
 
 #wplace-ext-overlay > img {
   width: var(--width);
-  height: var(--height);
+  height: auto;
   object-fit: contain;
   border: 1px dotted red;
   opacity: 0.4;
   pointer-events: none;
   position: absolute;
-  left: clamp(0px, var(--img-left), calc(100% - var(--width)));
-  top: clamp(0px, var(--img-top), calc(100% - var(--height)));
+  left: clamp(-95%, var(--img-left), 95%);
+  top: clamp(-95%, var(--img-top), 95%);
+  cursor: grab;
 }
 
 #wplace-ext-overlay > img.centered {
   --img-top: 50%;
   --img-left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#wplace-ext-overlay > img.dragging {
+  cursor: grabbing;
 }
 
 #wplace-ext-overlay.active > img {

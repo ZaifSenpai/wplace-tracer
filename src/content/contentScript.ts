@@ -6,12 +6,7 @@ const overlayHtml = `
 <div id="wplace-ext-overlay"></div>
 `;
 
-const imageReloadKeys = [
-  "status",
-  "selectedImage",
-  "overlayWidth",
-  "overlayHeight",
-];
+const imageReloadKeys = ["status", "selectedImage", "overlayWidth"];
 
 ((context) => {
   const { window, document, chrome } = context;
@@ -48,7 +43,6 @@ const imageReloadKeys = [
       updateImage({
         show: data.status ?? true,
         width: data.overlayWidth ?? 200,
-        height: data.overlayHeight ?? 200,
         data: data.selectedImage ?? null,
       })
     );
@@ -70,7 +64,6 @@ const imageReloadKeys = [
 
     $img.attr("src", imageInfo.data);
     $img.css("--width", imageInfo.width + "px");
-    $img.css("--height", imageInfo.height + "px");
     $overlay.append($img);
     makeDraggable($overlay.find("img"));
   }
