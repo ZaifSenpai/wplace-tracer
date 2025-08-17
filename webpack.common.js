@@ -7,7 +7,9 @@ const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 module.exports = {
   entry: {
     popup: path.resolve("src/popup/popup.tsx"),
+    welcome: path.resolve("src/welcome/welcome.tsx"),
     contentScript: path.resolve("src/content/contentScript.ts"),
+    background: path.resolve("src/background/background.ts"),
   },
   module: {
     rules: [
@@ -53,7 +55,7 @@ module.exports = {
       ],
     }),
     new NodePolyfillPlugin(),
-    ...getHtmlPlugins(["popup"]),
+    ...getHtmlPlugins(["popup", "welcome"]),
   ],
   output: {
     filename: "[name].js",
@@ -62,7 +64,7 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks(chunk) {
-        return chunk.name !== "contentScript";
+        return chunk.name !== "contentScript" && chunk.name !== "background";
       },
     },
   },

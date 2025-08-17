@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@import "@fontsource/sora/100.css";
+@import "@fontsource/sora/200.css";
+@import "@fontsource/sora/300.css";
+@import "@fontsource/sora/400.css";
+@import "@fontsource/sora/500.css";
+@import "@fontsource/sora/600.css";
+@import "@fontsource/sora/700.css";
+@import "@fontsource/sora/800.css";
+
+:root,
+body,
+body > div {
+  font-family: Sora, system-ui, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  height: 100%;
+}

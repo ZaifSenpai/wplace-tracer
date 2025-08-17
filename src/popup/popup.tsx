@@ -270,7 +270,7 @@ const App: React.FC<{}> = () => {
 };
 
 const container = document.createElement("div");
-document.title = "Popup";
+document.title = "Popup | " + runtimeApi.getManifest().name;
 document.body.appendChild(container);
 const root = createRoot(container);
 root.render(<App />);
