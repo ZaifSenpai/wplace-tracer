@@ -6,6 +6,13 @@ const overlayHtml = `
 <div id="wplace-ext-overlay"></div>
 `;
 
+const imageReloadKeys = [
+  "status",
+  "selectedImage",
+  "overlayWidth",
+  "overlayHeight",
+];
+
 ((context) => {
   const { window, document, chrome } = context;
 
@@ -17,27 +24,34 @@ const overlayHtml = `
     setImagePosition();
 
     storageApi.onChanged.addListener((changes, namespace) => {
-      if ("offset" in changes) {
-        setImagePosition(changes.offset.newValue ?? null);
-      } else {
+      if (imageReloadKeys.some((key) => key in changes)) {
         reloadImage();
         setImagePosition();
+      }
+    });
+
+    $(document).on("keydown", (e) => {
+      if (e.key === "Shift") {
+        $("#wplace-ext-overlay").addClass("active");
+      }
+    });
+
+    $(document).on("keyup", (e) => {
+      if (e.key === "Shift") {
+        $("#wplace-ext-overlay").removeClass("active");
       }
     });
   });
 
   function reloadImage() {
-    console.log("🚀 ~ reloadImage ~ reloadImage:", reloadImage);
-    storageApi.local
-      .get(["status", "selectedImage", "overlayWidth", "overlayHeight"])
-      .then((data) =>
-        updateImage({
-          show: data.status ?? true,
-          width: data.overlayWidth ?? 200,
-          height: data.overlayHeight ?? 200,
-          data: data.selectedImage ?? null,
-        })
-      );
+    storageApi.local.get(imageReloadKeys).then((data) =>
+      updateImage({
+        show: data.status ?? true,
+        width: data.overlayWidth ?? 200,
+        height: data.overlayHeight ?? 200,
+        data: data.selectedImage ?? null,
+      })
+    );
   }
 
   function updateImage(imageInfo: OverlayImageInfo) {
@@ -58,20 +72,67 @@ const overlayHtml = `
     $img.css("--width", imageInfo.width + "px");
     $img.css("--height", imageInfo.height + "px");
     $overlay.append($img);
+    makeDraggable($overlay.find("img"));
   }
 
-  async function setImagePosition(pos?: { top: number; left: number } | null) {
+  function saveFramePosition(pos: ImagePosition) {
+    storageApi.local.set({
+      framePosition: {
+        top: pos.top,
+        left: pos.left,
+      },
+    });
+  }
+
+  async function setImagePosition(pos?: ImagePosition | null) {
     if (typeof pos === "undefined") {
       pos = await storageApi.local
-        .get(["offset"])
-        .then((data) => data.offset ?? null);
+        .get(["framePosition"])
+        .then((data) => data.framePosition ?? null);
     }
 
     const $img = $("#wplace-ext-overlay > img");
 
-    pos ??= { top: 0, left: 0 };
+    if (pos) {
+      $img.css("--img-top", pos.top + "px");
+      $img.css("--img-left", pos.left + "px");
+      $img.removeClass("centered");
+    } else {
+      $img.css("--img-top", "");
+      $img.css("--img-left", "");
+      $img.addClass("centered");
+    }
+  }
 
-    $img.css("--img-top", pos.top + "px");
-    $img.css("--img-left", pos.left + "px");
+  function makeDraggable($element: JQuery<HTMLElement>) {
+    $element.on("mousedown", (event) => {
+      const offset = $element.offset();
+      const mouseX = event.pageX;
+      const mouseY = event.pageY;
+      $element.addClass("dragging");
+
+      $(document).on("mousemove", (moveEvent) => {
+        const newLeft = offset!.left + moveEvent.pageX - mouseX;
+        const newTop = offset!.top + moveEvent.pageY - mouseY;
+
+        setImagePosition({ top: newTop, left: newLeft });
+        saveFramePosition({ top: newTop, left: newLeft });
+      });
+
+      const stopDragging = () => {
+        $(document).off("mousemove");
+        $(document).off("mouseup");
+        $element.removeClass("dragging");
+      };
+
+      $(document).on("mouseup", () => {
+        stopDragging();
+      });
+      $(document).on("mouseleave", () => {
+        stopDragging();
+      });
+
+      return false; // Prevent text selection
+    });
   }
 })(window);

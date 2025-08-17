@@ -43,6 +43,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@fontsource/sora": "^5.2.6",
+    "@heroicons/react": "^2.2.0",
     "arrive": "^2.5.2",
     "autoprefixer": "^10.4.21",
     "jquery": "^3.7.1"

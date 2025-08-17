@@ -3,6 +3,8 @@ import { createRoot } from "react-dom/client";
 import "./popup.css";
 import { runtimeApi, storageApi } from "../lib/chromeApi";
 
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
+
 const App: React.FC<{}> = () => {
   const [status, setStatus] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -45,7 +47,10 @@ const App: React.FC<{}> = () => {
       reader.onload = (event) => {
         const fileData = event.target!.result as string;
         setSelectedImage(fileData);
-        storageApi.local.set({ selectedImage: fileData });
+        storageApi.local.set({
+          selectedImage: fileData,
+          framePosition: undefined,
+        });
       };
       reader.readAsDataURL(file);
       inputRef.current.value = ""; // Reset the input value
@@ -94,21 +99,6 @@ const App: React.FC<{}> = () => {
       storageApi.local.set({ maintainAspectRatio: !v });
       return !v;
     });
-  }, []);
-
-  const updatePosition = useCallback((x: number, y: number) => {
-    storageApi.local.get(["offset"], (data) => {
-      const offset = data.offset ?? { top: 0, left: 0 };
-
-      offset.top += y;
-      offset.left += x;
-
-      storageApi.local.set({ offset });
-    });
-  }, []);
-
-  const resetPosition = useCallback(() => {
-    storageApi.local.remove(["offset"]);
   }, []);
 
   return (
@@ -192,71 +182,10 @@ const App: React.FC<{}> = () => {
           />
         </div>
 
-        <p className="block text-sm font-medium text-gray-900 dark:text-white">
-          Position:
+        <p className="text-sm font-normal">
+          <InformationCircleIcon width={18} height={18} className="inline" />{" "}
+          Hold 'Shift' and drag image on the website to reposition
         </p>
-
-        <div className="grid gap-2 grid-rows-3 grid-cols-3">
-          <span></span>
-          <button
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm p-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 cursor-pointer justify-items-center"
-            title="Move Up"
-            onClick={() => updatePosition(0, -10)}
-          >
-            <img src="assets/arrow.svg" width={20} height={20} />
-          </button>
-          <span></span>
-          <button
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm p-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 cursor-pointer justify-items-center"
-            title="Move Left"
-            onClick={() => updatePosition(-10, 0)}
-          >
-            <img
-              src="assets/arrow.svg"
-              width={20}
-              height={20}
-              className="-rotate-90"
-            />
-          </button>
-          <button
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm p-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 cursor-pointer justify-items-center"
-            title="Reset position"
-            onClick={() => resetPosition()}
-          >
-            <img
-              src="assets/reset.svg"
-              width={20}
-              height={20}
-              className="-rotate-90"
-            />
-          </button>
-          <button
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm p-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 cursor-pointer justify-items-center"
-            title="Move Right"
-            onClick={() => updatePosition(10, 0)}
-          >
-            <img
-              src="assets/arrow.svg"
-              width={20}
-              height={20}
-              className="rotate-90"
-            />
-          </button>
-          <span></span>
-          <button
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm p-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 cursor-pointer justify-items-center"
-            title="Move Down"
-            onClick={() => updatePosition(0, 10)}
-          >
-            <img
-              src="assets/arrow.svg"
-              width={20}
-              height={20}
-              className="rotate-180"
-            />
-          </button>
-          <span></span>
-        </div>
       </div>
       <input
         ref={inputRef}

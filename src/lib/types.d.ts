@@ -4,3 +4,8 @@ declare interface OverlayImageInfo {
   height: number;
   data: string | null;
 }
+
+declare interface ImagePosition {
+  top: number;
+  left: number;
+}
