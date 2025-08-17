@@ -10,30 +10,16 @@ const App: React.FC<{}> = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [overlayWidth, setOverlayWidth] = useState(200);
   const [overlayHeight, setOverlayHeight] = useState(200);
-  const [maintainAspectRatio, setMaintainAspectRatio] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     storageApi.local.get(
-      [
-        "status",
-        "selectedImage",
-        "overlayWidth",
-        "overlayHeight",
-        "maintainAspectRatio",
-      ],
-      ({
-        status,
-        selectedImage,
-        overlayWidth,
-        overlayHeight,
-        maintainAspectRatio,
-      }) => {
+      ["status", "selectedImage", "overlayWidth", "overlayHeight"],
+      ({ status, selectedImage, overlayWidth, overlayHeight }) => {
         setStatus(status ?? true);
         setSelectedImage(selectedImage || null);
         setOverlayWidth(overlayWidth || 200);
         setOverlayHeight(overlayHeight || 200);
-        setMaintainAspectRatio(maintainAspectRatio ?? true);
       }
     );
   }, []);
@@ -73,7 +59,7 @@ const App: React.FC<{}> = () => {
     setOverlayWidth(newOverlayWidth);
     storageApi.local.set({ overlayWidth: newOverlayWidth });
 
-    if (maintainAspectRatio && !ignoreAspectRatio) {
+    if (!ignoreAspectRatio) {
       updateOverlayHeight(Math.round(newOverlayWidth / aspectRatio), true);
     }
   }
@@ -89,17 +75,10 @@ const App: React.FC<{}> = () => {
     setOverlayHeight(newOverlayHeight);
     storageApi.local.set({ overlayHeight: newOverlayHeight });
 
-    if (maintainAspectRatio && !ignoreAspectRatio) {
+    if (!ignoreAspectRatio) {
       updateOverlayWidth(Math.round(aspectRatio * newOverlayHeight), true);
     }
   }
-
-  const toggleMaintainAspectRatio = useCallback(() => {
-    setMaintainAspectRatio((v) => {
-      storageApi.local.set({ maintainAspectRatio: !v });
-      return !v;
-    });
-  }, []);
 
   return (
     <div className="w-full h-full bg-cyan-100 dark:bg-gray-800 text-gray-900 dark:text-gray-50">
@@ -153,22 +132,14 @@ const App: React.FC<{}> = () => {
             max={2000}
             onChange={(e) => updateOverlayWidth(e.target.valueAsNumber)}
           />
-          <button
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm p-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 cursor-pointer"
-            title="Maintain Aspect Ratio"
-            onClick={() => toggleMaintainAspectRatio()}
+          <img
+            className="m-2"
+            title="Aspect Ratio Maintained"
             tabIndex={-1}
-          >
-            <img
-              src={
-                maintainAspectRatio
-                  ? "assets/link.png"
-                  : "assets/link-broken.png"
-              }
-              width={30}
-              height={30}
-            />
-          </button>
+            src="assets/link.png"
+            width={30}
+            height={30}
+          ></img>
           <input
             type="number"
             aria-describedby="helper-text-explanation"
