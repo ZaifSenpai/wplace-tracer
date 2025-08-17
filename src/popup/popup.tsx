@@ -117,7 +117,7 @@ const App: React.FC<{}> = () => {
         )}
 
         <p className="block text-sm font-medium text-gray-900 dark:text-white">
-          Size:
+          Tracer Size:
         </p>
 
         <div className="flex max-w-sm mx-auto w-full justify-stretch gap-2">
