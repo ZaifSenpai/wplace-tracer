@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     strategy:
@@ -29,18 +29,27 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: npm run build-all
 
       - name: Renaming dist directory
         run: |
           REPO_NAME=$(echo ${{ github.repository }} | awk -F / '{print $2}')
           BRANCH_NAME=$(echo ${{ github.ref }} | awk -F / '{print $3}')
-          NEW_NAME="$REPO_NAME-$BRANCH_NAME"
-          mv dist $NEW_NAME
-          echo "NEW_NAME=$NEW_NAME" >> $GITHUB_ENV
+          NEW_NAME_CHROME="$REPO_NAME-chrome"
+          NEW_NAME_FIREFOX="$REPO_NAME-firefox"
+          echo "NEW_NAME_CHROME=$NEW_NAME_CHROME" >> $GITHUB_ENV
+          echo "NEW_NAME_FIREFOX=$NEW_NAME_FIREFOX" >> $GITHUB_ENV
 
-      - name: Upload build as artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload chrome build as artifact
+        uses: actions/upload-artifact@v4.6.1
         with:
-          name: ${{ env.NEW_NAME }}
-          path: ${{ env.NEW_NAME }}/*
+          name: ${{ env.NEW_NAME_CHROME }}
+          path: dist/chrome/*
+          retention-days: 5
+
+      - name: Upload firefox build as artifact
+        uses: actions/upload-artifact@v4.6.1
+        with:
+          name: ${{ env.NEW_NAME_FIREFOX }}
+          path: dist/firefox/*
+          retention-days: 5

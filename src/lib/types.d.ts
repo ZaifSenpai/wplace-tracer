@@ -1,3 +1,5 @@
+declare type Browser = "chrome" | "firefox";
+
 declare interface OverlayImageInfo {
   show: boolean;
   width: number;

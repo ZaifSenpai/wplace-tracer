@@ -14,6 +14,11 @@ const manifest = runtimeApi.getManifest();
 const App: React.FC<{}> = () => {
   return (
     <div className="w-full h-full bg-cyan-100 dark:bg-gray-800 text-gray-900 dark:text-gray-50 flex flex-col items-center p-18">
+      <div className="absolute top-0 right-0 invert-100 dark:invert-0">
+        <a href={GithubRepoUrl} target="_blank">
+          <img src="assets/github-corner-right.svg" className="size-24" />
+        </a>
+      </div>
       <div className="flex flex-col gap-8">
         <p className="flex gap-2 items-baseline">
           <span className="text-3xl">
@@ -25,11 +30,11 @@ const App: React.FC<{}> = () => {
         <div>
           <ul className="list-disc text-lg">
             <li>Please reload wplace.live</li>
-            <li>Select image from popup</li>
+            <li>Select image from side panel</li>
             <li>
               Hold 'Shift' while on wplace.live and drag image to reposition
             </li>
-            <li>Resize overlay image from popup</li>
+            <li>Resize overlay image from sidepanel</li>
             <li>
               For queries, email me at{" "}
               <a
