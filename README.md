@@ -5,6 +5,10 @@ Available on webstore:
 
 [![Wplace Tracer](https://img.shields.io/badge/Wplace%20Tracer-8A2BE2?logo=googlechrome&logoColor=ffffff)](https://chromewebstore.google.com/detail/efkjkoigpkglbkknnfcbdmfipbcdopao)
 
+## Demo
+
+[![Demo | Wplace Tracer](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fyoutu.be%2Fhyqb2DRc5kY)](https://youtu.be/hyqb2DRc5kY)
+
 # Development Guide
 
 ## Getting Started
