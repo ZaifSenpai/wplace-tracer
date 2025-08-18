@@ -47,5 +47,11 @@
         "contentStyle.css"
       ]
     }
-  ]
+  ],
+  "browser_specific_settings+firefox+": {
+    "gecko": {
+      "id": "@wplace-tracer@zaifsenpai",
+      "strict_min_version": "109.0"
+    }
+  }
 }
