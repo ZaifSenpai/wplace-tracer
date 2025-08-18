@@ -30,11 +30,11 @@ const App: React.FC<{}> = () => {
         <div>
           <ul className="list-disc text-lg">
             <li>Please reload wplace.live</li>
-            <li>Select image from popup</li>
+            <li>Select image from side panel</li>
             <li>
               Hold 'Shift' while on wplace.live and drag image to reposition
             </li>
-            <li>Resize overlay image from popup</li>
+            <li>Resize overlay image from sidepanel</li>
             <li>
               For queries, email me at{" "}
               <a
