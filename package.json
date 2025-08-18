@@ -46,6 +46,8 @@
     "@heroicons/react": "^2.2.0",
     "arrive": "^2.5.2",
     "autoprefixer": "^10.4.21",
-    "jquery": "^3.7.1"
+    "jquery": "^3.7.1",
+    "react-toastify": "^11.0.5",
+    "tailwind-merge": "^3.3.1"
   }
 }
