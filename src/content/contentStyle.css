@@ -24,9 +24,10 @@
   opacity: 0.4;
   pointer-events: none;
   position: absolute;
-  left: clamp(-95%, var(--img-left), 95%);
-  top: clamp(-95%, var(--img-top), 95%);
+  left: var(--img-left);
+  top: var(--img-top);
   cursor: grab;
+  max-width: unset;
 }
 
 #wplace-ext-overlay > img.centered {
@@ -42,4 +43,8 @@
 #wplace-ext-overlay.active > img {
   opacity: 0.7;
   pointer-events: all;
+}
+
+#wplace-ext-overlay.active.active-full > img {
+  opacity: 1;
 }

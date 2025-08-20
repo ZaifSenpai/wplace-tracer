@@ -26,14 +26,26 @@ const imageReloadKeys = ["status", "selectedImage", "overlayWidth"];
     });
 
     $(document).on("keydown", (e) => {
-      if (e.key === "Shift") {
-        $("#wplace-ext-overlay").addClass("active");
+      if ($("#wplace-ext-overlay").children().length) {
+        if (e.key === "Shift") {
+          e.preventDefault();
+          $("#wplace-ext-overlay").addClass("active");
+        } else if (e.key === "Tab") {
+          e.preventDefault();
+          $("#wplace-ext-overlay").addClass("active-full");
+        }
       }
     });
 
     $(document).on("keyup", (e) => {
-      if (e.key === "Shift") {
-        $("#wplace-ext-overlay").removeClass("active");
+      if ($("#wplace-ext-overlay").children().length) {
+        if (e.key === "Shift") {
+          e.preventDefault();
+          $("#wplace-ext-overlay").removeClass("active");
+        } else if (e.key === "Tab") {
+          e.preventDefault();
+          $("#wplace-ext-overlay").removeClass("active-full");
+        }
       }
     });
   });

@@ -102,7 +102,7 @@ const App: React.FC<{}> = () => {
             title="Width"
             value={overlayWidth}
             min={10}
-            max={2000}
+            max={20000}
             onChange={(e) => updateOverlayWidth(e.target.valueAsNumber)}
           />
           <p className="m-2 size-[30px] content-center text-center">X</p>
@@ -117,7 +117,11 @@ const App: React.FC<{}> = () => {
 
         <p className="text-sm font-normal">
           <InformationCircleIcon width={18} height={18} className="inline" /> By
-          holding 'Shift' on the website, you can drag the image to reposition.
+          holding 'Shift' to reposition image
+        </p>
+        <p className="text-sm font-normal">
+          <InformationCircleIcon width={18} height={18} className="inline" /> By
+          holding 'Shift + Tab' to see image with 100% opacity
         </p>
       </div>
       <input
