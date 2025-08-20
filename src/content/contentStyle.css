@@ -24,16 +24,10 @@
   opacity: 0.4;
   pointer-events: none;
   position: absolute;
-  left: var(--img-left);
-  top: var(--img-top);
+  left: var(--img-left, 0);
+  top: var(--img-top, 0);
   cursor: grab;
   max-width: unset;
-}
-
-#wplace-ext-overlay > img.centered {
-  --img-top: 50%;
-  --img-left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 #wplace-ext-overlay > img.dragging {

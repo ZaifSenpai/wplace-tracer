@@ -101,11 +101,9 @@ const imageReloadKeys = ["status", "selectedImage", "overlayWidth"];
     if (pos) {
       $img.css("--img-top", pos.top + "px");
       $img.css("--img-left", pos.left + "px");
-      $img.removeClass("centered");
     } else {
-      $img.css("--img-top", "");
-      $img.css("--img-left", "");
-      $img.addClass("centered");
+      $img.css("--img-top", "0");
+      $img.css("--img-left", "0");
     }
   }
 
