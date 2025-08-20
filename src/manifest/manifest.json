@@ -18,19 +18,8 @@
     "default_title": "Wplace Tracer",
     "default_icon": "assets/logo128.png"
   },
-  "side_panel+chrome+": {
-    "default_path": "popup.html",
-    "default_title": "Wplace Tracer",
-    "default_icon": "assets/logo128.png"
-  },
-  "sidebar_action+firefox+": {
-    "default_panel": "popup.html",
-    "default_title": "Wplace Tracer",
-    "default_icon": "assets/logo128.png"
-  },
   "permissions+chrome+": [
-    "storage",
-    "sidePanel"
+    "storage"
   ],
   "permissions+firefox+": [
     "storage"
@@ -41,6 +30,7 @@
         "https://wplace.live/*"
       ],
       "js": [
+        "panel.js",
         "contentScript.js"
       ],
       "css": [
@@ -53,5 +43,15 @@
       "id": "@wplace-tracer.zaifsenpai",
       "strict_min_version": "109.0"
     }
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "panel.css"
+      ],
+      "matches": [
+        "https://wplace.live/*"
+      ]
+    }
+  ]
 }

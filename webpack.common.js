@@ -4,6 +4,7 @@ const HtmlPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (env) => {
   const browser = env.browser || "chrome";
@@ -29,7 +30,7 @@ module.exports = (env) => {
 
   return {
     entry: {
-      popup: path.resolve("src/popup/popup.tsx"),
+      panel: path.resolve("src/panel/panel.tsx"),
       welcome: path.resolve("src/welcome/welcome.tsx"),
       contentScript: path.resolve("src/content/contentScript.ts"),
       background: path.resolve("src/background/background.ts"),
@@ -43,7 +44,20 @@ module.exports = (env) => {
         },
         {
           test: /\.css$/i,
-          use: ["style-loader", "css-loader", "postcss-loader"],
+          oneOf: [
+            {
+              issuer: path.resolve("src/panel/panel.tsx"),
+              use: [
+                MiniCssExtractPlugin.loader,
+                "css-loader",
+                "postcss-loader",
+              ],
+            },
+            {
+              // Embed CSS for all other entries
+              use: ["style-loader", "css-loader", "postcss-loader"],
+            },
+          ],
         },
         {
           test: /\.(jpg|jpeg|png|svg)$/,
@@ -94,7 +108,11 @@ module.exports = (env) => {
         "process.env.BROWSER": JSON.stringify(browser),
       }),
 
-      ...getHtmlPlugins(["popup", "welcome"]),
+      new MiniCssExtractPlugin({
+        filename: "[name].css",
+      }),
+
+      ...getHtmlPlugins(["welcome"]),
     ],
     output: {
       filename: "[name].js",
@@ -103,7 +121,11 @@ module.exports = (env) => {
     optimization: {
       splitChunks: {
         chunks(chunk) {
-          return chunk.name !== "contentScript" && chunk.name !== "background";
+          return (
+            chunk.name !== "contentScript" &&
+            chunk.name !== "background" &&
+            chunk.name !== "panel"
+          );
         },
       },
     },

@@ -42,3 +42,9 @@
 #wplace-ext-overlay.active.active-full > img {
   opacity: 1;
 }
+
+#wplace-tracer-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+}

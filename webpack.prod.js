@@ -15,7 +15,7 @@ module.exports = (env) => {
           extractComments: false,
           terserOptions: {
             compress: {
-              drop_console: true, // Remove 'console.*' calls
+              drop_console: ["log"], // Remove 'console.log' calls
               drop_debugger: true, // Remove 'debugger' statements
             },
             format: {

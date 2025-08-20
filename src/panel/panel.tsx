@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import "./popup.css";
-import { runtimeApi, storageApi } from "../lib/chromeApi";
+import "./panel.css";
+import { domApi, runtimeApi, storageApi } from "../lib/chromeApi";
 
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import "arrive";
 
 const App: React.FC<{}> = () => {
   const [status, setStatus] = useState(true);
@@ -135,8 +136,22 @@ const App: React.FC<{}> = () => {
   );
 };
 
-const container = document.createElement("div");
-document.title = "Popup | " + runtimeApi.getManifest().name;
-document.body.appendChild(container);
-const root = createRoot(container);
-root.render(<App />);
+document.arrive("#wplace-tracer-root", { existing: true }, (element) => {
+  let renderred = false;
+
+  if (element) {
+    const shadowRoot = domApi.openOrClosedShadowRoot(element as HTMLElement);
+    if (shadowRoot) {
+      const container = shadowRoot.getElementById("wplace-tracer-shadow-root");
+      if (container) {
+        const root = createRoot(container);
+        root.render(<App />);
+        renderred = true;
+      }
+    }
+  }
+
+  if (!renderred) {
+    console.error("Container not found in shadow root");
+  }
+});
