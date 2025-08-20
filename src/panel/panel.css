@@ -9,15 +9,9 @@
 @import "@fontsource/sora/700.css";
 @import "@fontsource/sora/800.css";
 
-body {
-  min-width: 300px;
-}
-
-:root,
-body,
-body > div {
+#wplace-tracer-shadow-root {
+  width: 300px;
   font-family: Sora, system-ui, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  height: 100%;
 }

@@ -3,5 +3,5 @@ export const {
   storage: storageApi,
   tabs: tabsApi,
   action: actionApi,
-  sidePanel: sidePanelApi
+  dom: domApi,
 } = chrome;

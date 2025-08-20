@@ -1,4 +1,3 @@
-import "arrive";
 import $ from "jquery";
 import { storageApi } from "../lib/chromeApi";
 
@@ -12,7 +11,7 @@ const imageReloadKeys = ["status", "selectedImage", "overlayWidth"];
   const { window, document, chrome } = context;
 
   $(() => {
-    $("body").append(overlayHtml);
+    injectViews();
 
     reloadImage();
 
@@ -26,17 +25,53 @@ const imageReloadKeys = ["status", "selectedImage", "overlayWidth"];
     });
 
     $(document).on("keydown", (e) => {
-      if (e.key === "Shift") {
-        $("#wplace-ext-overlay").addClass("active");
+      if ($("#wplace-ext-overlay").children().length) {
+        if (e.key === "Shift") {
+          e.preventDefault();
+          $("#wplace-ext-overlay").addClass("active");
+        } else if (e.key === "Tab") {
+          e.preventDefault();
+          $("#wplace-ext-overlay").addClass("active-full");
+        }
       }
     });
 
     $(document).on("keyup", (e) => {
-      if (e.key === "Shift") {
-        $("#wplace-ext-overlay").removeClass("active");
+      if ($("#wplace-ext-overlay").children().length) {
+        if (e.key === "Shift") {
+          e.preventDefault();
+          $("#wplace-ext-overlay").removeClass("active");
+        } else if (e.key === "Tab") {
+          e.preventDefault();
+          $("#wplace-ext-overlay").removeClass("active-full");
+        }
       }
     });
   });
+
+  function injectViews() {
+    $("body").append(overlayHtml);
+
+    // Prepare shadow dom
+
+    const host = document.createElement("div");
+    host.id = "wplace-tracer-root";
+    document.body.appendChild(host);
+
+    // Attach shadow root
+    const shadowRoot = host.attachShadow({ mode: "closed" });
+
+    // Create root container inside shadow
+    const shadowContainer = document.createElement("div");
+    shadowContainer.id = "wplace-tracer-shadow-root";
+    shadowRoot.appendChild(shadowContainer);
+
+    // Load CSS into shadow
+    const style = document.createElement("link");
+    style.rel = "stylesheet";
+    style.href = chrome.runtime.getURL("panel.css");
+    shadowRoot.appendChild(style);
+  }
 
   function reloadImage() {
     storageApi.local.get(imageReloadKeys).then((data) =>
@@ -89,11 +124,9 @@ const imageReloadKeys = ["status", "selectedImage", "overlayWidth"];
     if (pos) {
       $img.css("--img-top", pos.top + "px");
       $img.css("--img-left", pos.left + "px");
-      $img.removeClass("centered");
     } else {
-      $img.css("--img-top", "");
-      $img.css("--img-left", "");
-      $img.addClass("centered");
+      $img.css("--img-top", "0");
+      $img.css("--img-left", "0");
     }
   }
 
