@@ -55,10 +55,10 @@ const App: React.FC<{}> = () => {
   }
 
   return (
-    <div className="w-full h-full bg-cyan-100 dark:bg-gray-800 text-gray-900 dark:text-gray-50">
+    <div className="w-xs bg-cyan-100 dark:bg-gray-800 text-gray-900 dark:text-gray-50">
       <div className="p-4 flex flex-col items-stretch justify-center gap-3">
         <div className="flex justify-between items-center w-full">
-          <p className="text-2xl font-bold">{runtimeApi.getManifest().name}</p>
+          <p className="text-lg font-bold">{runtimeApi.getManifest().name}</p>
 
           <label className="inline-flex items-center cursor-pointer">
             <input
