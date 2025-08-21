@@ -1,9 +1,10 @@
 
 # Wplace Tracer
 
-Available on webstore:
+Available on:
 
-[![Wplace Tracer](https://img.shields.io/badge/Wplace%20Tracer-8A2BE2?logo=googlechrome&logoColor=ffffff)](https://chromewebstore.google.com/detail/efkjkoigpkglbkknnfcbdmfipbcdopao)
+[![Wplace Tracer Chrome](https://img.shields.io/badge/Google_Chrome-Wplace%20Tracer-8A2BE2?logo=googlechrome&logoColor=ffffff)](https://chromewebstore.google.com/detail/efkjkoigpkglbkknnfcbdmfipbcdopao)
+[![Wplace Tracer Firefox](https://img.shields.io/badge/Mozilla_Firefox-Wplace%20Tracer-8A2BE2?logo=firefox&logoColor=ffffff)](https://addons.mozilla.org/addon/wplace-tracer)
 
 ## Demo
 
