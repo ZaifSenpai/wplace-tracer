@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import "./popup.css";
-import { runtimeApi, storageApi } from "../lib/chromeApi";
+import "./panel.css";
+import { domApi, runtimeApi, storageApi } from "../lib/chromeApi";
 
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import "arrive";
 
 const App: React.FC<{}> = () => {
   const [status, setStatus] = useState(true);
@@ -54,10 +55,10 @@ const App: React.FC<{}> = () => {
   }
 
   return (
-    <div className="w-full h-full bg-cyan-100 dark:bg-gray-800 text-gray-900 dark:text-gray-50">
+    <div className="w-xs bg-cyan-100 dark:bg-gray-800 text-gray-900 dark:text-gray-50">
       <div className="p-4 flex flex-col items-stretch justify-center gap-3">
         <div className="flex justify-between items-center w-full">
-          <p className="text-2xl font-bold">{runtimeApi.getManifest().name}</p>
+          <p className="text-lg font-bold">{runtimeApi.getManifest().name}</p>
 
           <label className="inline-flex items-center cursor-pointer">
             <input
@@ -102,7 +103,7 @@ const App: React.FC<{}> = () => {
             title="Width"
             value={overlayWidth}
             min={10}
-            max={2000}
+            max={20000}
             onChange={(e) => updateOverlayWidth(e.target.valueAsNumber)}
           />
           <p className="m-2 size-[30px] content-center text-center">X</p>
@@ -117,7 +118,11 @@ const App: React.FC<{}> = () => {
 
         <p className="text-sm font-normal">
           <InformationCircleIcon width={18} height={18} className="inline" /> By
-          holding 'Shift' on the website, you can drag the image to reposition.
+          holding 'Shift' to reposition image
+        </p>
+        <p className="text-sm font-normal">
+          <InformationCircleIcon width={18} height={18} className="inline" /> By
+          holding 'Shift + Tab' to see image with 100% opacity
         </p>
       </div>
       <input
@@ -131,8 +136,22 @@ const App: React.FC<{}> = () => {
   );
 };
 
-const container = document.createElement("div");
-document.title = "Popup | " + runtimeApi.getManifest().name;
-document.body.appendChild(container);
-const root = createRoot(container);
-root.render(<App />);
+document.arrive("#wplace-tracer-root", { existing: true }, (element) => {
+  let renderred = false;
+
+  if (element) {
+    const shadowRoot = domApi.openOrClosedShadowRoot(element as HTMLElement);
+    if (shadowRoot) {
+      const container = shadowRoot.getElementById("wplace-tracer-shadow-root");
+      if (container) {
+        const root = createRoot(container);
+        root.render(<App />);
+        renderred = true;
+      }
+    }
+  }
+
+  if (!renderred) {
+    console.error("Container not found in shadow root");
+  }
+});

@@ -6,6 +6,8 @@ Available on:
 [![Wplace Tracer Chrome](https://img.shields.io/badge/Google_Chrome-Wplace%20Tracer-8A2BE2?logo=googlechrome&logoColor=ffffff)](https://chromewebstore.google.com/detail/efkjkoigpkglbkknnfcbdmfipbcdopao)
 [![Wplace Tracer Firefox](https://img.shields.io/badge/Mozilla_Firefox-Wplace%20Tracer-8A2BE2?logo=firefox&logoColor=ffffff)](https://addons.mozilla.org/addon/wplace-tracer)
 
+[![Support Me!](https://img.shields.io/badge/Support_Me-33e8f0?logo=kofi&logoColor=ff0000)](https://linkly.link/2Du03)
+
 ## Demo
 
 [![Demo | Wplace Tracer](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fyoutu.be%2Fhyqb2DRc5kY)](https://youtu.be/hyqb2DRc5kY)
